@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page App with Vertical Tabs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul class="tabs">
+                <li class="tab active" data-tab="home">Home</li>
+                <li class="tab" data-tab="history">History</li>
+            </ul>
+        </nav>
+        <div class="content">
+            <div id="home" class="tab-content active">
+                <h1>Home</h1>
+                <button id="showFormButton">Let's cook some pasta!</button>
+            </div>
+            <div id="history" class="tab-content">
+                <h1>History</h1>
+                <ul id="tasklist"></ul> <!-- Container for tasks in History tab -->
+            </div>
+            <div id="taskFormTab" class="tab-content">
+                <span id="backButton">&#8592; Back</span>
+                <h1>Add New Task</h1>
+                <form id="taskform">
+                    <label for="task">Task: </label>
+                    <input type="text" name="task" id="taskInput">
+                    <br>
+                    <label for="pastatype">Pasta type: </label>
+                    <select name="pastatype" id="pastaInput">
+                        <option value="">Select one</option>
+                        <option value="Spaghetti">Spaghetti</option>
+                        <option value="Fettuccine">Fettuccine</option>
+                        <option value="Penne">Penne</option>
+                        <option value="Linguine">Linguine</option>
+                        <option value="Lasagna">Lasagna</option>
+                    </select>
+                    <br>
+                    <label for="weight">Weight (in grams): </label>
+                    <input type="number" name="weight" id="weightInput">
+                    <br>
+                    <div id="ingredientsSection">
+                        <label>Ingredients:</label>
+                        <br>
+                        <button type="button" id="proteinButton">Proteins</button>
+                        <button type="button" id="veggieButton">Veggie</button>
+                        <button type="button" id="sauceButton">Sauce</button>
+                        <button type="button" id="othersButton">Others</button>
+                    </div>
+                    <br>
+                    <div id="ingredientOptions"></div>
+                    <label for="dueDate">Due Date: </label>
+                    <input type="date" name="dueDate" id="dueDateInput">
+                    <br>
+                    <label for="completionTime">Completion Time: </label>
+                    <input type="time" name="completionTime" id="completionTimeInput">
+                    <br>
+                    <label for="estimatedTime">Estimated completion time (in mins): </label>
+                    <input type="number" name="estimatedTime" id="estimatedTimeInput">
+                    <br>
+                    <button type="submit">Submit</button>
+                    <hr> <!-- This adds a horizontal line below the submit button -->
+                </form>
+                <div id="recipeSection"></div> <!-- Container for the recipe recommendation -->
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
