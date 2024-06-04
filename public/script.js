@@ -8,6 +8,7 @@ const ingredientsSection = document.getElementById("ingredientsSection");
 const ingredientOptions = document.getElementById("ingredientOptions");
 const pastaInput = document.getElementById("pastaInput");
 const recipeSection = document.getElementById("recipeSection");
+const cookingNote = document.getElementById("cookingNote");
 
 // Event listener for Button click
 button.addEventListener("click", function(event) {
@@ -17,32 +18,29 @@ button.addEventListener("click", function(event) {
     let pastaType = form.elements.pastatype.value; // Get the pasta type input value
     let weight = form.elements.weight.value; // Get the weight input value
     let date = (new Date()).toLocaleDateString('en-US'); // Convert to short date format
-    let dueDate = form.elements.dueDate.value; // Get the due date input value
-    let completionTime = form.elements.completionTime.value; // Get the completion time input value
-    let estimatedTime = form.elements.estimatedTime.value; // Get the estimated time input value
 
     // Call the addTask() function using the form values
-    addTask(task, pastaType, weight, date, dueDate, completionTime, estimatedTime, false);
+    addTask(task, pastaType, weight, date, false);
 
     // Clear the dynamically added ingredient options
     clearIngredientOptions();
+    pastaInput.selectedIndex = 0;
+    displayRecipe(pastaInput.value);
 
     // Log out the newly populated taskList every time the button has been pressed
     console.log(taskList);
+    
 });
 
 // Create an empty array to store our tasks
 var taskList = [];
 
-function addTask(taskDescription, pastaType, weight, createdDate, dueDate, completionTime, estimatedTime, completionStatus) {
+function addTask(taskDescription, pastaType, weight, createdDate, completionStatus) {
     let task = {
         taskDescription,
         pastaType,
         weight,
         createdDate,
-        dueDate,
-        completionTime,
-        estimatedTime,
         completionStatus
     };
 
@@ -50,21 +48,17 @@ function addTask(taskDescription, pastaType, weight, createdDate, dueDate, compl
     taskList.push(task);
 
     // Separate the DOM manipulation from the object creation logic
-    renderTask(task);
     updateHistory(task);
 }
 
 // Function to display the item on the page
-function renderTask(task) {
+function updateHistory(task) {
     let item = document.createElement("li");
     item.innerHTML = `<p>${task.taskDescription}</p>
                       <p>Pasta Type: ${task.pastaType}</p>
-                      <p>Weight: ${task.weight}</p>
-                      <p>Due: ${task.dueDate}</p>
-                      <p>Completion Time: ${task.completionTime}</p>
-                      <p>Estimated Time: ${task.estimatedTime} mins</p>`;
+                      <p>Weight: ${task.weight}</p>`;
 
-    tasklist.appendChild(item);
+    tasklist.insertBefore(item, tasklist.firstChild);
 
     // Setup delete button DOM elements
     let delButton = document.createElement("button");
@@ -81,21 +75,7 @@ function renderTask(task) {
 
     // Clear the value of the input once the task has been added to the page
     form.reset();
-}
-
-// Function to update the history tab with a new task
-function updateHistory(task) {
-    let item = document.createElement("li");
-    item.innerHTML = `<p>${task.taskDescription}</p>
-                      <p>Pasta Type: ${task.pastaType}</p>
-                      <p>Weight: ${task.weight}</p>
-                      <p>Created: ${task.createdDate}</p>
-                      <p>Due: ${task.dueDate}</p>
-                      <p>Completion Time: ${task.completionTime}</p>
-                      <p>Estimated Time: ${task.estimatedTime} mins</p>`;
-
-    // Insert the new task at the beginning of the history task list
-    tasklist.insertBefore(item, tasklist.firstChild);
+    
 }
 
 // Tab switching functionality
@@ -131,6 +111,11 @@ document.addEventListener('DOMContentLoaded', function() {
     backButton.addEventListener('click', () => {
         document.getElementById('taskFormTab').classList.remove('active');
         document.getElementById('home').classList.add('active');
+        clearIngredientOptions();
+        pastaInput.selectedIndex = 0;
+        displayRecipe(pastaInput.value);
+        
+    
     });
 
     // Ingredient buttons event listeners
@@ -192,12 +177,14 @@ function addIngredientOption(type) {
         
         <label for="${type.toLowerCase()}Weight">Weight (in grams): </label>
         <input type="number" name="${type.toLowerCase()}Weight">
-        
         <br>
     `;
+    
 
     // Insert the new ingredient option box before the ingredientsSection
     ingredientsSection.insertAdjacentElement('beforebegin', optionBox);
+    
+    
 }
 
 function clearIngredientOptions() {
@@ -209,6 +196,8 @@ function clearIngredientOptions() {
         }
     });
 }
+
+
 
 function displayRecipe(pastaType) {
     let recipe = '';
@@ -297,4 +286,22 @@ function displayRecipe(pastaType) {
 
     // Display the recipe in the recipe section
     recipeSection.innerHTML = recipe;
+}
+
+
+
+// Home page image scroll
+let currentIndex = 0;
+function moveSlide(direction) {
+    const container = document.querySelector('.carousel-container');
+    const images = document.querySelectorAll('.carousel-container img');
+    const totalImages = images.length;
+    currentIndex += direction;
+    if (currentIndex < 0) {
+        currentIndex = totalImages - 1;
+    } else if (currentIndex >= totalImages) {
+        currentIndex = 0;
+    }
+    const offset = -currentIndex * 100;
+    container.style.transform = `translateX(${offset}%)`;
 }

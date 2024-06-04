@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Single Page App with Vertical Tabs</title>
+    <title>Pasta Helper</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,6 +17,15 @@
         <div class="content">
             <div id="home" class="tab-content active">
                 <h1>Home</h1>
+                <div class="carousel">
+                    <div class="carousel-container">
+                        <img src="spaghetti.jpg" alt="spaghetti img">
+                        <img src="penne.jpg" alt="penne img">
+                        <img src="pasta.jpg" alt="pasta img">
+                    </div>
+                    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+                </div>
                 <button id="showFormButton">Let's cook some pasta!</button>
             </div>
             <div id="history" class="tab-content">
@@ -25,7 +34,7 @@
             </div>
             <div id="taskFormTab" class="tab-content">
                 <span id="backButton">&#8592; Back</span>
-                <h1>Add New Task</h1>
+                <h1>Log a new dish</h1>
                 <form id="taskform">
                     <label for="task">Task: </label>
                     <input type="text" name="task" id="taskInput">
@@ -53,20 +62,11 @@
                     </div>
                     <br>
                     <div id="ingredientOptions"></div>
-                    <label for="dueDate">Due Date: </label>
-                    <input type="date" name="dueDate" id="dueDateInput">
-                    <br>
-                    <label for="completionTime">Completion Time: </label>
-                    <input type="time" name="completionTime" id="completionTimeInput">
-                    <br>
-                    <label for="estimatedTime">Estimated completion time (in mins): </label>
-                    <input type="number" name="estimatedTime" id="estimatedTimeInput">
-                    <br>
                     <button type="submit">Submit</button>
                     <hr> <!-- This adds a horizontal line below the submit button -->
                 </form>
                 <div id="recipeSection"></div> <!-- Container for the recipe recommendation -->
-            </div>
+            </div> 
         </div>
     </div>
     <script src="script.js"></script>
