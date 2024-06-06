@@ -1,6 +1,6 @@
 // Setting up variables for our HTML elements using DOM selection
 const form = document.getElementById("taskform");
-const button = document.querySelector("#taskform > button"); // Complex CSS query
+const button = document.querySelector("#taskform > button");
 const tasklist = document.getElementById("tasklist");
 const showFormButton = document.getElementById("showFormButton");
 const backButton = document.getElementById("backButton");
@@ -8,7 +8,8 @@ const ingredientsSection = document.getElementById("ingredientsSection");
 const ingredientOptions = document.getElementById("ingredientOptions");
 const pastaInput = document.getElementById("pastaInput");
 const recipeSection = document.getElementById("recipeSection");
-const cookingNote = document.getElementById("cookingNote");
+const taskInput = document.getElementById("taskInput"); // Added task input field
+const weightInput = document.getElementById("weightInput"); // Added weight input field
 
 // Event listener for Button click
 button.addEventListener("click", function(event) {
@@ -19,63 +20,131 @@ button.addEventListener("click", function(event) {
     let weight = form.elements.weight.value; // Get the weight input value
     let date = (new Date()).toLocaleDateString('en-US'); // Convert to short date format
 
+    // Collect ingredient data
+    let ingredients = collectIngredientData();
+
     // Call the addTask() function using the form values
-    addTask(task, pastaType, weight, date, false);
+    addTask(task, pastaType, weight, date, ingredients, false);
 
     // Clear the dynamically added ingredient options
     clearIngredientOptions();
     pastaInput.selectedIndex = 0;
     displayRecipe(pastaInput.value);
 
+    // Clear the task input and weight input fields
+    taskInput.value = ''; // Clear task input field
+    weightInput.value = ''; // Clear weight input field
+
     // Log out the newly populated taskList every time the button has been pressed
     console.log(taskList);
-    
 });
+
+// Function to collect ingredient data
+function collectIngredientData() {
+    let ingredients = [];
+    const dynamicOptions = ingredientsSection.querySelectorAll('.ingredient-option');
+    dynamicOptions.forEach(option => {
+        const ingredientType = option.querySelector('label').innerText.replace(':', '').trim();
+        const ingredientName = option.querySelector('select').value;
+        const ingredientWeight = option.querySelector('input[type="number"]').value;
+        if (ingredientName && ingredientWeight) {
+            ingredients.push({ type: ingredientType, name: ingredientName, weight: ingredientWeight });
+        }
+    });
+    return ingredients;
+}
 
 // Create an empty array to store our tasks
 var taskList = [];
 
-function addTask(taskDescription, pastaType, weight, createdDate, completionStatus) {
+function addTask(taskDescription, pastaType, weight, createdDate, ingredients, completionStatus) {
     let task = {
         taskDescription,
         pastaType,
         weight,
         createdDate,
+        ingredients, // Include ingredients in the task object
         completionStatus
     };
 
     // Add the task to our array of tasks
-    taskList.push(task);
+    taskList.unshift(task); // Add the new task to the beginning of the array
 
     // Separate the DOM manipulation from the object creation logic
-    updateHistory(task);
+    updateHistory();
 }
 
-// Function to display the item on the page
-function updateHistory(task) {
-    let item = document.createElement("li");
-    item.innerHTML = `<p>${task.taskDescription}</p>
-                      <p>Pasta Type: ${task.pastaType}</p>
-                      <p>Weight: ${task.weight}</p>`;
+// Function to update history display
+function updateHistory() {
+    tasklist.innerHTML = ''; // Clear the current list
 
-    tasklist.insertBefore(item, tasklist.firstChild);
+    taskList.forEach((task, index) => {
+        let item = document.createElement("div");
+        item.className = "history-item";
+        item.innerHTML = `
+            <img src="${getPastaImage(task.pastaType)}" alt="${task.pastaType}">
+            <p>${task.taskDescription}</p>
+            <p>Pasta Type: ${task.pastaType}</p>
+            <p>Weight: ${task.weight}</p>
+            <p>Date: ${task.createdDate}</p>
+            <p>Ingredients:</p>
+            <ul>${task.ingredients.map(ingredient => `<li>${ingredient.type}: ${ingredient.name} (${ingredient.weight}g)</li>`).join('')}</ul>
+            <button class="delete-task">Delete</button>
+        `;
 
-    // Setup delete button DOM elements
-    let delButton = document.createElement("button");
-    let delButtonText = document.createTextNode("Delete");
-    delButton.appendChild(delButtonText);
-    item.appendChild(delButton); // Adds a delete button to every task
+        tasklist.appendChild(item);
 
-    // Listen for when the delete button is clicked
-    delButton.addEventListener("click", function(event) {
-        item.remove(); // Remove the task item from the page when button clicked
-        // Remove the task from the taskList array
-        taskList = taskList.filter(t => t !== task);
+        // Add event listener for delete button
+        item.querySelector('.delete-task').addEventListener('click', function() {
+            taskList.splice(index, 1); // Remove the task from the taskList array
+            updateHistory(); // Update the display
+        });
     });
 
-    // Clear the value of the input once the task has been added to the page
-    form.reset();
-    
+    // Initialize or update the carousel
+    initializeCarousel();
+}
+
+// Function to get pasta image based on pasta type
+function getPastaImage(pastaType) {
+    switch(pastaType) {
+        case 'Spaghetti':
+            return 'spaghetti.jpg';
+        case 'Fettuccine':
+            return 'fettuccine.jpg';
+        case 'Penne':
+            return 'penne.jpg';
+        case 'Linguine':
+            return 'linguine.jpg';
+        case 'Lasagna':
+            return 'lasagna.jpg';
+        default:
+            return 'default_pasta.jpg';
+    }
+}
+
+// Initialize or update the carousel
+function initializeCarousel() {
+    const items = document.querySelectorAll('.history-item');
+    let currentIndex = 0;
+
+    function showItem(index) {
+        items.forEach((item, i) => {
+            item.style.display = i === index ? 'block' : 'none';
+        });
+    }
+
+    showItem(currentIndex);
+
+    document.querySelector('.history-prev').addEventListener('click', () => {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
+        showItem(currentIndex);
+    });
+
+    document.querySelector('.history-next').addEventListener('click', () => {
+        currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+        showItem(currentIndex);
+    });
 }
 
 // Tab switching functionality
@@ -114,8 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         clearIngredientOptions();
         pastaInput.selectedIndex = 0;
         displayRecipe(pastaInput.value);
-        
-    
     });
 
     // Ingredient buttons event listeners
@@ -132,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function addIngredientOption(type) {
     const optionBox = document.createElement('div');
+    optionBox.className = 'ingredient-option';
     let options = '';
 
     switch(type.toLowerCase()) {
@@ -172,32 +240,29 @@ function addIngredientOption(type) {
     optionBox.innerHTML = `
         <label for="${type.toLowerCase()}">${type}: </label>
         <select name="${type.toLowerCase()}">
-        <option value="">Select one</option>
-        ${options}</select>
-        
+            <option value="">Select one</option>
+            ${options}
+        </select>
         <label for="${type.toLowerCase()}Weight">Weight (in grams): </label>
         <input type="number" name="${type.toLowerCase()}Weight">
+        <button type="button" class="remove-ingredient">X</button> <!-- Add remove button -->
         <br>
     `;
-    
 
-    // Insert the new ingredient option box before the ingredientsSection
-    ingredientsSection.insertAdjacentElement('beforebegin', optionBox);
-    
-    
+    // Append the new ingredient option box to the ingredientsSection
+    ingredientsSection.appendChild(optionBox);
+
+    // Add event listener to the remove button
+    optionBox.querySelector('.remove-ingredient').addEventListener('click', function() {
+        optionBox.remove();
+    });
 }
 
 function clearIngredientOptions() {
     // Remove all dynamically added ingredient options
-    const dynamicOptions = form.querySelectorAll('div');
-    dynamicOptions.forEach(option => {
-        if (option !== ingredientsSection && option !== ingredientOptions) {
-            option.remove();
-        }
-    });
+    const dynamicOptions = ingredientsSection.querySelectorAll('.ingredient-option');
+    dynamicOptions.forEach(option => option.remove());
 }
-
-
 
 function displayRecipe(pastaType) {
     let recipe = '';
@@ -287,8 +352,6 @@ function displayRecipe(pastaType) {
     // Display the recipe in the recipe section
     recipeSection.innerHTML = recipe;
 }
-
-
 
 // Home page image scroll
 let currentIndex = 0;

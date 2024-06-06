@@ -3,17 +3,22 @@ body {
     display: flex;
     height: 100vh;
     margin: 0;
+    background-color: #f0f0f0;
 }
 
 .container {
     display: flex;
     flex-grow: 1;
+    width: 100%; /* Ensure container takes full width */
 }
 
 nav {
     width: 200px;
     background-color: #f1f1f1;
     border-right: 1px solid #ccc;
+    position: fixed; /* Fix the navigation bar */
+    height: 100vh; /* Ensure it takes the full height of the viewport */
+    overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
 .tabs {
@@ -38,56 +43,57 @@ nav {
 .content {
     flex-grow: 1;
     padding: 20px;
-    overflow-y: auto;
+    overflow-y: auto; /* Enable scrolling for the content */
+    margin-left: 200px; /* Add margin to account for the fixed navigation bar */
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Stack items vertically */
     align-items: center;
 }
 
 .tab-content {
     display: none;
+    width: 100%; /* Ensure tab-content takes full width */
+    max-width: 800px; /* Set a max-width to the tab-content */
 }
 
 .tab-content.active {
     display: block;
 }
 
+#taskFormTab {
+    position: relative; /* Needed for positioning */
+    width: 100%; /* Ensure it takes full width */
+}
+
 #backButton {
     cursor: pointer;
     font-size: 1.2em;
-    margin-bottom: 20px;
     display: inline-block;
+    margin-bottom: 20px;
+}
+
+#taskFormTab h1 {
+    margin-top: 0; /* Remove top margin for better alignment */
 }
 
 form {
     margin-top: 20px;
-    width: 1000px; /* Make the form narrower */
+    width: 100%;
+    max-width: 500px; /* Adjusted for responsiveness */
     text-align: left; /* Align text to the left */
 }
 
-.recipeSection {
-    margin-top: 20px;
-    width: 1000px; /* Make the form narrower */
-    text-align: left; /* Align text to the left */
-}
-
-form label {
+form label, form input, form select, form button {
     display: block;
     margin-top: 10px;
-    text-align: left; /* Ensure labels are aligned to the left */
-}
-
-form input, form select, form button {
-    margin-top: 5px;
     width: 100%; /* Ensure the inputs take up the full width of the form */
-    max-width: 500px; /* Set a maximum width for the inputs */
     padding: 8px;
     box-sizing: border-box;
-    margin: 0; /* Remove auto centering */
 }
 
 #ingredientsSection {
-    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
 }
 
 #ingredientsSection button {
@@ -97,19 +103,6 @@ form input, form select, form button {
     font-size: 14px;
     cursor: pointer;
     width: auto; /* Ensure buttons do not take up the full width */
-}
-
-
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
 }
 
 .carousel {
@@ -136,9 +129,7 @@ body {
     border-radius: 10px;
 }
 
-
-
-button.prev {
+button.prev, button.next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -150,18 +141,7 @@ button.prev {
     border-radius: 50%;
     user-select: none;
 }
-button.next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 50%;
-    user-select: none;
-}
+
 button.prev {
     left: 10px;
 }
@@ -172,4 +152,38 @@ button.next {
 
 button:hover {
     background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+/* History carousel */
+.history-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.history-item {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+}
+
+.history-item img {
+    max-width: 100px;
+    max-height: 100px;
+    margin-bottom: 10px;
+}
+
+.history-prev, .history-next {
+    cursor: pointer;
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    margin: 10px;
+}
+
+.history-prev:hover, .history-next:hover {
+    background-color: #ccc;
 }
