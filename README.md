@@ -31,11 +31,11 @@ After unzipping the file, open the 'public' folder and launch the 'index.html' f
 
 Once you've opened the page, click on the 'Let's cook some pasta!' button each time you want to log a dish or meal. After selecting a type of pasta, you'll see a recommended recipe to follow. An image of the corresponding dish will also be shown on the side, or at the bottom of the screen for mobile users.
 
-You can log the ingredients you used in your pasta by clicking on the 'Ingredients' buttons for preset options. If you want to remove an ingredient, you want to do so.
+You can log the ingredients you used in your pasta by clicking on the 'Ingredients' buttons for preset options. If you want to remove an ingredient, you can click the red "Remove" button to do so.
 
 After you click on the 'Submit' button, your record will appear under the 'History' tab and the current form will be cleared and reset.
 
-You can view your dish record under the 'History' tab. Use the arrows to navigate through your past cooking history. If you want to remove any records, simply click the 'Delete' button.
+You can view your dish record under the 'History' tab. There are 3 existed records. Use the arrows to navigate through your past cooking history. A new record will the added and dispaly the first. If you want to remove any records, simply click the 'Delete' button.
 
 ## Limitation
 This single-page web application is in the early stages of its prototype and offers limited functionality. 

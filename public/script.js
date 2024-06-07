@@ -117,7 +117,6 @@ function addTask(taskDescription, pastaType, weight, createdDate, ingredients) {
     // Add the task to our array of tasks
     taskList.unshift(task); // Add the new task to the beginning of the array
 
-    // Separate the DOM manipulation from the object creation logic
     updateHistory();
 }
 
@@ -152,23 +151,6 @@ function updateHistory() {
     initializeCarousel();
 }
 
-// Function to get pasta image based on pasta type
-function getPastaImage(pastaType) {
-    switch(pastaType) {
-        case 'Spaghetti':
-            return 'spaghetti.jpg';
-        case 'Fettuccine':
-            return 'fettuccine.jpg';
-        case 'Penne':
-            return 'penne.jpg';
-        case 'Linguine':
-            return 'linguine.jpg';
-        case 'Lasagna':
-            return 'lasagna.jpg';
-        default:
-            return 'default_pasta.jpg';
-    }
-}
 
 // Initialize or update the carousel
 function initializeCarousel() {
@@ -250,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateHistory();
 });
 
-// Create the ingedients options when the corespond ingredients button is clicked
+// Create the ingredients options when the corespond ingredients button is clicked
 function addIngredientOption(type) {
     const optionBox = document.createElement('div');
     optionBox.className = 'ingredient-option';
@@ -406,6 +388,24 @@ function displayRecipe(pastaType) {
 
     // Display the recipe in the recipe section
     recipeSection.innerHTML = recipe;
+}
+
+// Function to get pasta image based on pasta type
+function getPastaImage(pastaType) {
+    switch(pastaType) {
+        case 'Spaghetti':
+            return 'spaghetti.jpg';
+        case 'Fettuccine':
+            return 'fettuccine.jpg';
+        case 'Penne':
+            return 'penne.jpg';
+        case 'Linguine':
+            return 'linguine.jpg';
+        case 'Lasagna':
+            return 'lasagna.jpg';
+        default:
+            return 'preperation.jpg';
+    }
 }
 
 // Function to show the preview image
