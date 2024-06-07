@@ -16,12 +16,12 @@
         </nav>
         <div class="content">
             <div id="home" class="tab-content active">
-                <h1>Home</h1>
+                <h1 id="homeTitle">Pasta Helper</h1>
                 <div class="carousel">
                     <div class="carousel-container">
-                        <img src="spaghetti.jpg" alt="spaghetti img">
-                        <img src="penne.jpg" alt="penne img">
-                        <img src="pasta.jpg" alt="pasta img">
+                        <img src="home-pasta-img-1.jpg" alt="home-pasta-img-1">
+                        <img src="home-pasta-img-2.jpg" alt="home-pasta-img-2">
+                        <img src="home-pasta-img-3.jpg" alt="home-pasta-img-3">
                     </div>
                     <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
                     <button class="next" onclick="moveSlide(1)">&#10095;</button>
@@ -29,48 +29,101 @@
                 <button id="showFormButton">Let's cook some pasta!</button>
             </div>
             <div id="history" class="tab-content">
-                <h1>History</h1>
+                <h1 id="historyTitle">History</h1>
                 <div class="history-carousel">
-                    <button class="history-prev">&#10094;</button>
-                    <ul id="tasklist"></ul> <!-- Container for tasks in History tab -->
-                    <button class="history-next">&#10095;</button>
+                    <ul id="tasklist">
+                        <!-- Sample Pasta Records -->
+                        <div class="history-item">
+                            <img src="home-pasta-img-2.jpg" alt="Spaghetti">
+                            <p>Cooked Spaghetti with Tomato Sauce</p>
+                            <p>Pasta Type: Spaghetti</p>
+                            <p>Weight: 200g</p>
+                            <p>Date: 06/01/2024</p>
+                            <p>Ingredients:</p>
+                            <ul>
+                                <li>Protein: Chicken (100g)</li>
+                                <li>Veggie: Carrot (50g)</li>
+                                <li>Sauce: Tomato Sauce (100g)</li>
+                            </ul>
+                            <button class="delete-task">Delete</button>
+                        </div>
+                        <div class="history-item">
+                            <img src="penne.jpg" alt="Penne">
+                            <p>Baked Penne with Cheese</p>
+                            <p>Pasta Type: Penne</p>
+                            <p>Weight: 250g</p>
+                            <p>Date: 05/30/2024</p>
+                            <p>Ingredients:</p>
+                            <ul>
+                                <li>Protein: Beef (150g)</li>
+                                <li>Veggie: Broccoli (100g)</li>
+                                <li>Sauce: Alfredo Sauce (150g)</li>
+                            </ul>
+                            <button class="delete-task">Delete</button>
+                        </div>
+                        <div class="history-item">
+                            <img src="Lasagna.jpg" alt="Lasagna">
+                            <p>Classic Lasagna</p>
+                            <p>Pasta Type: Lasagna</p>
+                            <p>Weight: 300g</p>
+                            <p>Date: 05/25/2024</p>
+                            <p>Ingredients:</p>
+                            <ul>
+                                <li>Protein: Pork (200g)</li>
+                                <li>Sauce: Marinara Sauce (150g)</li>
+                                <li>Others: Cheese (100g)</li>
+                            </ul>
+                            <button class="delete-task">Delete</button>
+                        </div>
+                    </ul>
+                    <div class="arrow-buttons">
+                        <button class="history-prev">&#10094;</button>
+                        <button class="history-next">&#10095;</button>
+                    </div>
                 </div>
             </div>
             <div id="taskFormTab" class="tab-content">
                 <span id="backButton">&#8592; Back</span>
                 <h1>Log a new dish</h1>
-                <form id="taskform">
-                    <label for="task">Task: </label>
-                    <input type="text" name="task" id="taskInput">
-                    <br>
-                    <label for="pastatype">Pasta type: </label>
-                    <select name="pastatype" id="pastaInput">
-                        <option value="">Select one</option>
-                        <option value="Spaghetti">Spaghetti</option>
-                        <option value="Fettuccine">Fettuccine</option>
-                        <option value="Penne">Penne</option>
-                        <option value="Linguine">Linguine</option>
-                        <option value="Lasagna">Lasagna</option>
-                    </select>
-                    <br>
-                    <label for="weight">Weight (in grams): </label>
-                    <input type="number" name="weight" id="weightInput">
-                    <br>
-                    <div id="ingredientsSection">
-                        <label>Ingredients:</label>
-                        <br>
-                        <button type="button" id="proteinButton">Proteins</button>
-                        <button type="button" id="veggieButton">Veggie</button>
-                        <button type="button" id="sauceButton">Sauce</button>
-                        <button type="button" id="othersButton">Others</button>
+                <div class="form-preview-container">
+                    <div class="form-container">
+                        <form id="taskform">
+                            <label for="task">Task: </label>
+                            <input type="text" name="task" id="taskInput">
+                            <br>
+                            <label for="pastatype">Pasta type: </label>
+                            <select name="pastatype" id="pastaInput">
+                                <option value="">Select one</option>
+                                <option value="Spaghetti">Spaghetti</option>
+                                <option value="Fettuccine">Fettuccine</option>
+                                <option value="Penne">Penne</option>
+                                <option value="Linguine">Linguine</option>
+                                <option value="Lasagna">Lasagna</option>
+                            </select>
+                            <br>
+                            <label for="weight">Weight (in grams): </label>
+                            <input type="number" name="weight" id="weightInput">
+                            <br>
+                            <div id="ingredientsSection">
+                                <label>Ingredients:</label>
+                                <br>
+                                <button type="button" id="proteinButton">Proteins</button>
+                                <button type="button" id="veggieButton">Veggie</button>
+                                <button type="button" id="sauceButton">Sauce</button>
+                                <button type="button" id="othersButton">Others</button>
+                            </div>
+                            <br>
+                            <div id="ingredientOptions"></div>
+                            <button type="submit">Submit</button>
+                        </form>
+                        <div id="recipeSection"></div>
                     </div>
-                    <br>
-                    <div id="ingredientOptions"></div>
-                    <button type="submit">Submit</button>
-                    <hr> <!-- This adds a horizontal line below the submit button -->
-                </form>
-                <div id="recipeSection"></div> <!-- Container for the recipe recommendation -->
-            </div> 
+                    <div class="preview-container">
+                        <h2>Dish Preview</h2>
+                        <img id="pastaPreview" src="" alt="Pasta Preview" style="display: none;">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

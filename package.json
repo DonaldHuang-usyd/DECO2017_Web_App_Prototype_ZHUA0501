@@ -1,7 +1,7 @@
 {
-  "name": "abcd1234-tracker",
+  "name": "zhua0501-A3-web-app-protptype",
   "version": "0.0.1",
-  "description": "a template for DECO2017 Assessment 3",
+  "description": "zhua0501-A3-web-app-protptype",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -10,17 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hamsall/abcd1234-tracker.git"
+    "url": "git@github.com:DonaldHuang-usyd/DECO2017_Web_App_Prototype_ZHUA0501.git"
   },
   "keywords": [
     "tracker"
   ],
-  "author": "hamsall",
+  "author": "ziwei huang",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hamsall/abcd1234-tracker/issues"
+    "url": "https://github.com/DonaldHuang-usyd/DECO2017_Web_App_Prototype_ZHUA0501/issues"
   },
-  "homepage": "https://github.com/hamsall/abcd1234-tracker#readme",
+  "homepage": "https://github.com/DonaldHuang-usyd/DECO2017_Web_App_Prototype_ZHUA0501",
   "dependencies": {
     "express": "^4.18.2",
     "sass": "^1.75.0"

@@ -1,4 +1,4 @@
-// Setting up variables for our HTML elements using DOM selection
+// Setting up variables for HTML elements using DOM selection
 const form = document.getElementById("taskform");
 const button = document.querySelector("#taskform > button");
 const tasklist = document.getElementById("tasklist");
@@ -8,8 +8,55 @@ const ingredientsSection = document.getElementById("ingredientsSection");
 const ingredientOptions = document.getElementById("ingredientOptions");
 const pastaInput = document.getElementById("pastaInput");
 const recipeSection = document.getElementById("recipeSection");
-const taskInput = document.getElementById("taskInput"); // Added task input field
-const weightInput = document.getElementById("weightInput"); // Added weight input field
+const taskInput = document.getElementById("taskInput");
+const weightInput = document.getElementById("weightInput");
+const pastaPreview = document.getElementById("pastaPreview");
+
+// Initial pasta records history
+const initialTasks = [
+    {
+        taskDescription: "Cooked Spaghetti with Tomato Sauce",
+        pastaType: "Spaghetti",
+        weight: 200,
+        createdDate: "06/01/2024",
+        ingredients: [
+            { type: "Protein", name: "Chicken", weight: 100 },
+            { type: "Veggie", name: "Carrot", weight: 50 },
+            { type: "Sauce", name: "Tomato Sauce", weight: 100 }
+        ],
+       
+    },
+    {
+        taskDescription: "Baked Penne with Cheese",
+        pastaType: "Penne",
+        weight: 250,
+        createdDate: "05/30/2024",
+        ingredients: [
+            { type: "Protein", name: "Beef", weight: 150 },
+            { type: "Veggie", name: "Broccoli", weight: 100 },
+            { type: "Sauce", name: "Alfredo Sauce", weight: 150 }
+        ],
+
+    },
+    {
+        taskDescription: "Classic Lasagna",
+        pastaType: "Lasagna",
+        weight: 300,
+        createdDate: "05/25/2024",
+        ingredients: [
+            { type: "Protein", name: "Pork", weight: 200 },
+            { type: "Sauce", name: "Marinara Sauce", weight: 150 },
+            { type: "Others", name: "Cheese", weight: 100 }
+        ],
+
+    }
+];
+
+// Create an empty array to store tasks
+var taskList = [];
+
+// Add initial tasks to the taskList
+initialTasks.forEach(task => addTask(task.taskDescription, task.pastaType, task.weight, task.createdDate, task.ingredients));
 
 // Event listener for Button click
 button.addEventListener("click", function(event) {
@@ -19,14 +66,14 @@ button.addEventListener("click", function(event) {
     let pastaType = form.elements.pastatype.value; // Get the pasta type input value
     let weight = form.elements.weight.value; // Get the weight input value
     let date = (new Date()).toLocaleDateString('en-US'); // Convert to short date format
-
+    
     // Collect ingredient data
     let ingredients = collectIngredientData();
 
     // Call the addTask() function using the form values
-    addTask(task, pastaType, weight, date, ingredients, false);
+    addTask(task, pastaType, weight, date, ingredients);
 
-    // Clear the dynamically added ingredient options
+    // Clear the dynamically added ingredient options and clear the form
     clearIngredientOptions();
     pastaInput.selectedIndex = 0;
     displayRecipe(pastaInput.value);
@@ -34,6 +81,9 @@ button.addEventListener("click", function(event) {
     // Clear the task input and weight input fields
     taskInput.value = ''; // Clear task input field
     weightInput.value = ''; // Clear weight input field
+
+    // Reset the preview image to default (hidden)
+    hidePreview();
 
     // Log out the newly populated taskList every time the button has been pressed
     console.log(taskList);
@@ -54,17 +104,14 @@ function collectIngredientData() {
     return ingredients;
 }
 
-// Create an empty array to store our tasks
-var taskList = [];
-
-function addTask(taskDescription, pastaType, weight, createdDate, ingredients, completionStatus) {
+function addTask(taskDescription, pastaType, weight, createdDate, ingredients) {
     let task = {
         taskDescription,
         pastaType,
         weight,
         createdDate,
         ingredients, // Include ingredients in the task object
-        completionStatus
+        
     };
 
     // Add the task to our array of tasks
@@ -79,13 +126,13 @@ function updateHistory() {
     tasklist.innerHTML = ''; // Clear the current list
 
     taskList.forEach((task, index) => {
-        let item = document.createElement("div");
+        let item = document.createElement("li");
         item.className = "history-item";
         item.innerHTML = `
             <img src="${getPastaImage(task.pastaType)}" alt="${task.pastaType}">
             <p>${task.taskDescription}</p>
             <p>Pasta Type: ${task.pastaType}</p>
-            <p>Weight: ${task.weight}</p>
+            <p>Weight: ${task.weight} g</p>
             <p>Date: ${task.createdDate}</p>
             <p>Ingredients:</p>
             <ul>${task.ingredients.map(ingredient => `<li>${ingredient.type}: ${ingredient.name} (${ingredient.weight}g)</li>`).join('')}</ul>
@@ -183,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearIngredientOptions();
         pastaInput.selectedIndex = 0;
         displayRecipe(pastaInput.value);
+        hidePreview(); // Hide the preview image when going back
     });
 
     // Ingredient buttons event listeners
@@ -194,9 +242,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Pasta type change event listener
     pastaInput.addEventListener('change', function() {
         displayRecipe(pastaInput.value);
+        showPreview(pastaInput.value); // Show the preview image when a pasta type is selected
     });
+
+
+    // Initialize history with initial tasks
+    updateHistory();
 });
 
+// Create the ingedients options when the corespond ingredients button is clicked
 function addIngredientOption(type) {
     const optionBox = document.createElement('div');
     optionBox.className = 'ingredient-option';
@@ -245,8 +299,9 @@ function addIngredientOption(type) {
         </select>
         <label for="${type.toLowerCase()}Weight">Weight (in grams): </label>
         <input type="number" name="${type.toLowerCase()}Weight">
-        <button type="button" class="remove-ingredient">X</button> <!-- Add remove button -->
+        <button type="button" class="remove-ingredient" style="background-color: #c82333;">Remove</button> 
         <br>
+        <hr>
     `;
 
     // Append the new ingredient option box to the ingredientsSection
@@ -351,6 +406,26 @@ function displayRecipe(pastaType) {
 
     // Display the recipe in the recipe section
     recipeSection.innerHTML = recipe;
+}
+
+// Function to show the preview image
+function showPreview(pastaType) {
+    const pastaImages = {
+        'Spaghetti': 'spaghetti.jpg',
+        'Fettuccine': 'fettuccine.jpg',
+        'Penne': 'penne.jpg',
+        'Linguine': 'linguine.jpg',
+        'Lasagna': 'lasagna.jpg'
+
+    };
+    const imgSrc = pastaImages[pastaType] || 'preperation.jpg';
+    pastaPreview.src = imgSrc;
+    pastaPreview.style.display = 'block';
+}
+
+// Function to hide the preview image
+function hidePreview() {
+    pastaPreview.style.display = 'none';
 }
 
 // Home page image scroll
